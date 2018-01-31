@@ -4,37 +4,94 @@ import {observable} from 'mobx';
 import {observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 
-class AppState {
-    @observable timer = 0;
+import PatientForm from './patient/index';
+import FormularForm from './formular/index';
+import ReviewForm from './review/index';
 
-    constructor() {
-        setInterval(() => {
-            this.timer += 1;
-        }, 1000);
+import './style.scss';
+
+class IndexView extends React.Component {
+
+    step: number = 1;
+    state: any = {
+        step: 1,
+        patient_info: null,
+        formular_info: null
+    }
+    form: any;
+    form_ins: any;
+
+    constructor(props) {
+        super(props);
+        this.handleNext = this.handleNext.bind(this);
+        this.handlePrev = this.handlePrev.bind(this);
+        this.handlePrint = this.handlePrint.bind(this);
     }
 
-    resetTimer() {
-        this.timer = 0;
-    }
-}
+    handlePrev() {
+        this.setState({
+            step: 1
+        })
+    };
 
-@observer
-class TimerView extends React.Component<{appState: AppState}, {}> {
+    handleNext() {
+        let next_state = {
+            ...this.state,
+            step: this.state.step + 1
+        }
+        if(this.state.step == 1) {
+            next_state.patient_info = this.form_ins.getData();
+        }
+        if(this.state.step == 2) {
+            next_state.formular_info = this.form_ins.getData();
+        }
+        console.log(next_state);
+        this.setState(next_state);
+    };
+
+    handlePrint() {
+        console.log("print");
+    };
+
+
     render() {
+
+        let prev_button = <button onClick={this.handlePrev} > Back to home </button>;
+        let next_button = <button onClick={this.handleNext} > Next </button>;
+        let print_button = <button onClick={this.handlePrint}> Print </button>;
+
+        switch(this.state.step) {
+            case 1: {
+                prev_button = null;
+                print_button = null;
+                this.form = <PatientForm ref={ins => {this.form_ins = ins;}} > </PatientForm>
+                break; 
+            }
+            case 2: {
+                prev_button = null;
+                print_button = null;
+                this.form = <FormularForm ref={ins => {this.form_ins = ins;}} > </FormularForm>
+                break;
+            }
+            case 3: {
+                next_button = null;
+                this.form = <ReviewForm data = {this.state} > </ReviewForm>
+                break;
+            }
+        }
         return (
-            <div>
-                <button onClick={this.onReset}>
-                    Seconds passed: {this.props.appState.timer}
-                </button>
+            <div className="content">
+                <div className="form">
+                    { this.form }
+                    { prev_button }
+                    { next_button }
+                    { print_button }
+                </div>
                 <DevTools />
             </div>
         );
      }
 
-     onReset = () => {
-         this.props.appState.resetTimer();
-     }
 };
 
-const appState = new AppState();
-ReactDOM.render(<TimerView appState={appState} />, document.getElementById('root'));
+ReactDOM.render(<IndexView />, document.getElementById('root'));

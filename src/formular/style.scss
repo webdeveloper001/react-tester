@@ -1,0 +1,29 @@
+.formular-form {
+	>select {
+		width: 60%;
+		height: 50px;
+		padding: 10px;
+		border-radius: 5px;
+		border: 1px solid #ccc;
+	}
+	>div {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		>div  {
+			 label {
+				width: 150px;
+				display: block;
+				padding: 20px;
+				font-size: 25px;
+			}
+			 input {
+				width: 60%;
+				height: 50px;
+				padding: 10px;
+				border-radius: 5px;
+				border: 1px solid #ccc;
+			}
+		}
+	}
+}

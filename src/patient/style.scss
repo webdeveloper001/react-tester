@@ -1,0 +1,23 @@
+.patient-form {
+	width: 100%;
+	>div {
+		display: flex;
+		justify-content: center;
+		padding: 10px;
+		margin: 10px;
+		width: 100%;
+		>label {
+			width: 150px;
+			display: block;
+			padding: 20px;
+			font-size: 25px;
+		}
+		>input {
+			width: 60%;
+			height: 50px;
+			padding: 10px;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+		}
+	}
+}
